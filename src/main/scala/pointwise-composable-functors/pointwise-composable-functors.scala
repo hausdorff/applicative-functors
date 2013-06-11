@@ -1,4 +1,5 @@
-/** Most of this was written Peter Fraenkel. Mainly the hard parts. */
+/** Most of this was written by Peter Fraenkel. Mainly the hard parts.
+ Code was reviewed and supplemented with help of Zach Allaun. */
 
 package pointwise_composable_functors
 
