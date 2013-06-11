@@ -7,7 +7,7 @@ import applicative.ApplicativeSeq
 import applicative.ApplicativeSeq._
 
 
-class FunctorTests extends FunSuite {
+class ApplicativeFunctorTests extends FunSuite {
   test("Non-pointwise map composure") {
     val v1 = (1 to 5).wrapf.map(x => x+1).map(x => x*2).values
     val t1 = (1 to 5).map(x => x+1).map(x => x*2)
