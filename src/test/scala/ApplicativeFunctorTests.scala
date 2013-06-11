@@ -3,8 +3,8 @@ package tests
 import org.scalatest.FunSuite
 import scala.concurrent._
 import scala.concurrent.duration._
-import applicative.SeqF
-import applicative.SeqF._
+import applicative.ApplicativeSeq
+import applicative.ApplicativeSeq._
 
 
 class FunctorTests extends FunSuite {
