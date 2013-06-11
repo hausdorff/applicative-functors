@@ -7,32 +7,11 @@ import scala.concurrent._
 import ExecutionContext.Implicits.global
 
 
-/** Implements the a pointwise applicative functor. That is, when one
- composes a series of `map` calls, normally one has to wait for each
- successive map call to complete over the complete functor before the next
- map is called. In this implementation, each component is seen as a
- completely independent set of function compositions, allowing us to pick any
- particular element, of the functor, and find the result, independent of
- whether the other elements have fully evaluated.
- 
- Much like the Haskell implementation. A normal functor is simply
- something on which `fmap` is defined. For example, `map` is defined for
- lists, making them a functor. More formally a functor fnctr is defined
- for some fmap:
+/** Ziplists are a type of applicative functor that is allowed to contain
+ either data or functions, and which defines laws for composing functions
+ and applying them to data. So for example, in Haskell notation:
 
- fmap :: (a -> b) -> fnctr a -> fnctr b
-
- An *applicative* functor is just a functor that allows us to apply
- a functor full of functions to a functor full of data. More formally:
-
- appmap :: fnctr (a -> b) -> fnctr a -> fnctr b
-
- This class defines the applicative functor in this way. The crucial
- difference (as noted above) is that when we chain together calls of `map`,
- normally we have to wait for one complete `map` to complete before we can
- start the next `map`, where in this implemenation, each element is
- implemented as an independent composition of functions, meaning that each
- can be observed independent of whether others have completed computation.
+ [(+3),(*2)] <*> [1,2] = [4,4]
 */
 class ApplicativeSeq[A] (l: Seq[()=>A]) {
   def map[B](f: A =>B) =
