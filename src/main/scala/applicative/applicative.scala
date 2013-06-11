@@ -13,23 +13,23 @@ import ExecutionContext.Implicits.global
 
  [(+3),(*2)] <*> [1,2] = [4,4]
 */
-class ApplicativeSeq[A] (l: Seq[()=>A]) {
+class ZipSeq[A] (l: Seq[()=>A]) {
   def map[B](f: A =>B) =
-    new ApplicativeSeq(l.map( x => () => f(x())))
-  def scanLeft[B](b0: B)(f: (B,A)=>B): ApplicativeSeq[B] = {
+    new ZipSeq(l.map( x => () => f(x())))
+  def scanLeft[B](b0: B)(f: (B,A)=>B): ZipSeq[B] = {
     val l2 = l.scanLeft( ()=>b0 )( (b,a) => () => f(b(),a()) )
-    new ApplicativeSeq[B](l2)
+    new ZipSeq[B](l2)
   }
   def values() = l.map(_())
   def inSeries(): Seq[Future[A]] =
     l.tail.scanLeft(future{l.head.apply()})(
       (f: Future[A],x: ()=>A) =>  f.map( _ => x() ))
 }
-object ApplicativeSeq {
-  class ApplicativeSeqMaker[A](l: Seq[A]) {
-    def wrapf() = new ApplicativeSeq[A](l.map( x => () => x) )
+object ZipSeq {
+  class ZipSeqMaker[A](l: Seq[A]) {
+    def wrapf() = new ZipSeq[A](l.map( x => () => x) )
   }
 
-  implicit def SeqToApplicativeSeqMaker[A](l: Seq[A]) =
-    new ApplicativeSeqMaker[A](l)
+  implicit def SeqToZipSeqMaker[A](l: Seq[A]) =
+    new ZipSeqMaker[A](l)
 }
