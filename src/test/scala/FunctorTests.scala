@@ -1,8 +1,10 @@
 package tests
 
 import org.scalatest.FunSuite
-import pointwise_composable_functors.SeqF
-import pointwise_composable_functors.SeqF._
+import scala.concurrent._
+import scala.concurrent.duration._
+import applicative.SeqF
+import applicative.SeqF._
 
 
 class FunctorTests extends FunSuite {
