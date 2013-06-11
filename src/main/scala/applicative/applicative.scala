@@ -1,7 +1,7 @@
 /** Most of this was written by Peter Fraenkel. Mainly the hard parts.
  Code was reviewed and supplemented with help of Zach Allaun. */
 
-package Applicative
+package applicative
 
 import scala.concurrent._
 import ExecutionContext.Implicits.global
