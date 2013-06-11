@@ -43,7 +43,8 @@ class ApplicativeSeq[A] (l: Seq[()=>A]) {
   }
   def values() = l.map(_())
   def inSeries(): Seq[Future[A]] =
-    l.tail.scanLeft( future{l.head.apply()} ) ( (f: Future[A],x: ()=>A) =>  f.map( _ => x() ))
+    l.tail.scanLeft(future{l.head.apply()})(
+      (f: Future[A],x: ()=>A) =>  f.map( _ => x() ))
 }
 object ApplicativeSeq {
   class ApplicativeSeqMaker[A](l: Seq[A]) {
