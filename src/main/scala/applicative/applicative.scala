@@ -34,22 +34,23 @@ import ExecutionContext.Implicits.global
  implemented as an independent composition of functions, meaning that each
  can be observed independent of whether others have completed computation.
 */
-class SeqF[A] (l: Seq[()=>A]) {
+class ApplicativeSeq[A] (l: Seq[()=>A]) {
   def map[B](f: A =>B) =
-    new SeqF(l.map( x => () => f(x())))
-  def scanLeft[B](b0: B)(f: (B,A)=>B): SeqF[B] = {
+    new ApplicativeSeq(l.map( x => () => f(x())))
+  def scanLeft[B](b0: B)(f: (B,A)=>B): ApplicativeSeq[B] = {
     val l2 = l.scanLeft( ()=>b0 )( (b,a) => () => f(b(),a()) )
-    new SeqF[B](l2)
+    new ApplicativeSeq[B](l2)
   }
   def values() = l.map(_())
   def inSeries(): Seq[Future[A]] =
     l.tail.scanLeft( future{l.head.apply()} ) ( (f: Future[A],x: ()=>A) =>  f.map( _ => x() ))
 }
-object SeqF { 
-  class SeqFMaker[A](l: Seq[A]) {
-    def wrapf() = new SeqF[A](l.map( x => () => x) )
+object ApplicativeSeq {
+  class ApplicativeSeqMaker[A](l: Seq[A]) {
+    def wrapf() = new ApplicativeSeq[A](l.map( x => () => x) )
   }
   
 
-  implicit def SeqToSeqFMaker[A](l: Seq[A]) = new SeqFMaker[A](l)
+  implicit def SeqToApplicativeSeqMaker[A](l: Seq[A]) =
+    new ApplicativeSeqMaker[A](l)
 }
