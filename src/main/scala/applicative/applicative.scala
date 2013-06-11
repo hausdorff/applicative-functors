@@ -50,7 +50,6 @@ object ApplicativeSeq {
   class ApplicativeSeqMaker[A](l: Seq[A]) {
     def wrapf() = new ApplicativeSeq[A](l.map( x => () => x) )
   }
-  
 
   implicit def SeqToApplicativeSeqMaker[A](l: Seq[A]) =
     new ApplicativeSeqMaker[A](l)
